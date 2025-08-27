@@ -17,6 +17,7 @@ job.init(args['JOB_NAME'], args)
 
 bucket = "airbnb-listings268"
 input_prefix = "parquet_data/"
+processed_prefix = "parquet_data/processed/"
 output_prefix = "transformed_bi/"
 
 input_path = f"s3://{bucket}/{input_prefix}"
@@ -68,5 +69,21 @@ df.write.mode("overwrite").partitionBy("city").parquet(output_path)
 
 print("Data cleaning for BI completed successfully!")
 
+s3 = boto3.client("s3")
+paginator = s3.get_paginator("list_objects_v2")
+pages = paginator.paginate(Bucket=bucket, Prefix=input_prefix)
+
+for page in pages:
+    for obj in page.get("Contents", []):
+        key = obj["Key"]
+        if key.endswith(".parquet") and "processed/" not in key:
+            dest_key = key.replace(input_prefix, processed_prefix, 1)
+            print(f"Moving {key} -> {dest_key}")
+            s3.copy_object(
+                Bucket=bucket,
+                CopySource={"Bucket": bucket, "Key": key},
+                Key=dest_key
+            )
+            s3.delete_object(Bucket=bucket, Key=key)
 
 job.commit()
