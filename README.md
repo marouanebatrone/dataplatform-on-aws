@@ -61,7 +61,7 @@ GROUP BY city
 ORDER BY avg_reviews DESC;
 ```
 
-![Athena filling]("screenshots/Cities_highest_avg_reviews per month QUERY athena.png")
+![Athena filling](screenshots/Cities_highest_avg_reviews_per_month_QUERY_athena.png)
 
 
 ## Downstream analytics and ML
