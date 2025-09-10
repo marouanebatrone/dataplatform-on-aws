@@ -81,5 +81,3 @@ ORDER BY avg_reviews DESC;
 This project demonstrates how to build a mini data platform on AWS using open Airbnb datasets. The system covers the full lifecycle from raw data ingestion into an S3-based data lake, transformation pipelines with Glue, query capabilities with Athena, downstream analytics in Redshift/QuickSight, and machine learning workloads in SageMaker.
 
 It can be expanded for enterprise-scale needs with additional automation, monitoring, and CI/CD pipelines.
-
-An extension architecture will be released soon.
